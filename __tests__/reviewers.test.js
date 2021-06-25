@@ -107,12 +107,18 @@ describe('reviewers routes', () => {
       }
     );
 
-    const res = await request(app).delete(`/api/v1/reviewers/${reviewerData.id}`);
+    const res = await request(app).delete(`/api/v1/reviewers/${reviewerData.id}`)
+      .send(
+        {
+          name: 'Jay Sherman',
+          company: 'Springfield Review'
+        }
+      );
 
-    expect(res.body).toEqual({ 
+    expect(res.body).not.toEqual({ 
       ...reviewerData.dataValues,
       updatedAt: expect.any(String),
-      createdAt: reviewerData.dataValues.createdAt.toISOSTring()
+      createdAt: reviewerData.dataValues.createdAt.toISOString()
     });
   });
 });
