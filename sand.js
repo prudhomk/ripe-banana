@@ -1,4 +1,4 @@
-import sequelize from './lib/utils/sequelize.js';
+import sequelize from './lib/utils/db.js';
 
 run();
 
