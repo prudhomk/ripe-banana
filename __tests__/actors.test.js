@@ -28,4 +28,23 @@ describe('actors routes', () => {
       createdAt: expect.any(String)
     });
   });
+
+  it('GET actor by id', async () => {
+    // post an actor
+    Actor.create(martinShort);
+
+    // get that actor
+    const res = await request(app)
+      .get('/api/v1/actors')
+    ;
+
+    // test 
+    expect.toString(res.body).toEqual({
+      ...martinShort,
+      dob: martinShort.dob.toISOString(),
+      id: expect.any(Number),
+      updatedAt: expect.any(String),
+      createdAt: expect.any(String)
+    });
+  });
 });
