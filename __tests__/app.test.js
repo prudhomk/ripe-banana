@@ -2,11 +2,30 @@ import sequelize from '../lib/utils/db.js';
 import request from 'supertest';
 import app from '../lib/app.js';
 import Studio from '../lib/models/Studio.js';
-import studios from '../lib/controllers/studios.js';
 
 describe('demo routes', () => {
   beforeEach(() => {
     return sequelize.sync({ force: true });
+  });
+
+  it('posts studio via POST', async () => {
+    const res = await request(app)
+      .post('/api/v1/studios')
+      .send({ 
+        name: 'Fox',
+        city: 'Hollywood',
+        state: 'California',
+        country: 'United States'
+      });
+    expect(res.body).toEqual([{
+      id: 1,
+      name: 'Fox',
+      city: 'Hollywood',
+      state: 'California',
+      country: 'United States',
+      updatedAt: expect.any(String),
+      createdAt: expect.any(String)
+    }]);
   });
 
   it('retrieves studios via GET', async () => {
