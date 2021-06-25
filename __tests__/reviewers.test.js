@@ -70,6 +70,57 @@ describe('reviewers routes', () => {
       createdAt: reviewerData.dataValues.createdAt.toISOString()
     });
   });
+
+  it('updates a reviewer', async () => {
+    const reviewerData = await Reviewer.create(
+      {
+        name: 'Rooger Eggbert',
+        company: 'Times Magazine'
+      },
+    );
+
+    reviewerData.name = 'Roger Ebert';
+
+    const res = await request(app).put(`/api/v1/reviewers/${reviewerData.id}`)
+      .send(
+        {
+          name: 'Roger Ebert',
+          company: 'Times Magazine'
+        }
+      );
+
+    expect(res.body).toEqual({
+      ...reviewerData.dataValues,
+      updatedAt: expect.any(String),
+      createdAt: reviewerData.dataValues.createdAt.toISOString()
+    });
+
+    expect(res.body.updatedAt).not
+      .toEqual(reviewerData.dataValues.updatedAt.toISOString());
+  });
+
+  it('deletes a reviewer', async () => {
+    const reviewerData = await Reviewer.create(
+      {
+        name: 'Jay Sherman',
+        company: 'Springfield Review'
+      }
+    );
+
+    const res = await request(app).delete(`/api/v1/reviewers/${reviewerData.id}`)
+      .send(
+        {
+          name: 'Jay Sherman',
+          company: 'Springfield Review'
+        }
+      );
+
+    expect(res.body).not.toEqual({ 
+      ...reviewerData.dataValues,
+      updatedAt: expect.any(String),
+      createdAt: reviewerData.dataValues.createdAt.toISOString()
+    });
+  });
 });
 
 
