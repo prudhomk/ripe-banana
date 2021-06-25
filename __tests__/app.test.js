@@ -67,4 +67,20 @@ describe('demo routes', () => {
     }]);
 
   });
+  it('finds studio by id', async () => {
+    const studioData = await Studio.create(
+      {
+        name: 'Fox',
+        city: 'Hollywood',
+        state: 'California',
+        country: 'United States'
+      },
+    );
+    const res = await request(app).get('/api/v1/studios/1');
+    expect(res.body).toEqual({
+      ...studioData.dataValues,
+      updatedAt: studioData.dataValues.updatedAt.toISOString(),
+      createdAt: studioData.dataValues.createdAt.toISOString(),
+    });
+  });
 });
