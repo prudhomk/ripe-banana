@@ -55,6 +55,21 @@ describe('reviewers routes', () => {
       createdAt: reviewerData[2].dataValues.createdAt.toISOString() }
     ]);
   });
+
+  it('retrieves a reviewer by id', async () => {
+    const reviewerData = await Reviewer.create(
+      {
+        name: 'Armando White',
+        company: 'Troll Inc'
+      },
+    );
+    const res = await request(app).get('/api/v1/reviewers/1');
+    expect(res.body).toEqual({
+      ...reviewerData.dataValues,
+      updatedAt: reviewerData.dataValues.updatedAt.toISOString(),
+      createdAt: reviewerData.dataValues.createdAt.toISOString()
+    });
+  });
 });
 
 
