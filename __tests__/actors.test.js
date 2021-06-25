@@ -13,6 +13,11 @@ describe('actors routes', () => {
     dob: new Date('1950-03-26'),
     pob: 'Hamilton, Ontario, Canada'
   };
+  const steveMartin = {
+    name: 'Steve Martin',
+    dob: new Date('1945-08-14'),
+    pob: 'Waco, Texas, United States'
+  };
 
   it('POST route for actors', async () => {
     const res = await request(app) 
@@ -46,5 +51,32 @@ describe('actors routes', () => {
       updatedAt: expect.any(String),
       createdAt: expect.any(String)
     });
+  });
+
+  it('GET all actors', async () => {
+    // post 2 actors
+    Actor.create(martinShort);
+    Actor.create(steveMartin);
+
+    // get those actors
+    const res = await request(app).get('/api/v1/actors');
+
+    // test
+    expect(res.body).toEqual([
+      {
+        ...martinShort,
+        dob: martinShort.dob.toISOString(),
+        id: expect.any(Number),
+        updatedAt: expect.any(String),
+        createdAt: expect.any(String)
+      },
+      {
+        ...steveMartin,
+        dob: steveMartin.dob.toISOString(),
+        id: expect.any(Number),
+        updatedAt: expect.any(String),
+        createdAt: expect.any(String)
+      }
+    ]);
   });
 });
