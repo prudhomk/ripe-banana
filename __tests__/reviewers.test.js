@@ -98,6 +98,23 @@ describe('reviewers routes', () => {
     expect(res.body.updatedAt).not
       .toEqual(reviewerData.dataValues.updatedAt.toISOString());
   });
+
+  it('deletes a reviewer', async () => {
+    const reviewerData = await Reviewer.create(
+      {
+        name: 'Jay Sherman',
+        company: 'Springfield Review'
+      }
+    );
+
+    const res = await request(app).delete(`/api/v1/reviewers/${reviewerData.id}`);
+
+    expect(res.body).toEqual({ 
+      ...reviewerData.dataValues,
+      updatedAt: expect.any(String),
+      createdAt: reviewerData.dataValues.createdAt.toISOSTring()
+    });
+  });
 });
 
 
