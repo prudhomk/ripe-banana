@@ -23,6 +23,7 @@ describe('actors routes', () => {
     expect(res.body).toEqual({
       id: expect.any(Number),
       ...martinShort,
+      dob: martinShort.dob.toISOString(),
       updatedAt: expect.any(String),
       createdAt: expect.any(String)
     });
