@@ -81,12 +81,22 @@ describe('reviewers routes', () => {
 
     reviewerData.name = 'Roger Ebert';
 
-    const res = await request(app).put(`/api/v1/reviewers/${reviewerData.id}`);
+    const res = await request(app).put(`/api/v1/reviewers/${reviewerData.id}`)
+      .send(
+        {
+          name: 'Roger Ebert',
+          company: 'Times Magazine'
+        }
+      );
+
     expect(res.body).toEqual({
       ...reviewerData.dataValues,
-      updatedAt: reviewerData.dataValues.updatedAt.toISOString(),
+      updatedAt: expect.any(String),
       createdAt: reviewerData.dataValues.createdAt.toISOString()
     });
+
+    expect(res.body.updatedAt).not
+      .toEqual(reviewerData.dataValues.updatedAt.toISOString());
   });
 });
 
