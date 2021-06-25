@@ -1,6 +1,7 @@
 import sequelize from '../lib/utils/db.js';
 import request from 'supertest';
 import app from '../lib/app.js';
+import Reviewer from '../lib/models/Reviewer.js';
 
 describe('reviewers routes', () => {
   beforeEach(() => {
