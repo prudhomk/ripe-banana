@@ -35,11 +35,11 @@ describe('actors routes', () => {
 
     // get that actor
     const res = await request(app)
-      .get('/api/v1/actors')
+      .get('/api/v1/actors/1')
     ;
 
     // test 
-    expect.toString(res.body).toEqual({
+    expect(res.body).toEqual({
       ...martinShort,
       dob: martinShort.dob.toISOString(),
       id: expect.any(Number),
