@@ -17,7 +17,7 @@ describe('demo routes', () => {
         state: 'California',
         country: 'United States'
       });
-    expect(res.body).toEqual([{
+    expect(res.body).toEqual({
       id: 1,
       name: 'Fox',
       city: 'Hollywood',
@@ -25,7 +25,7 @@ describe('demo routes', () => {
       country: 'United States',
       updatedAt: expect.any(String),
       createdAt: expect.any(String)
-    }]);
+    });
   });
 
   it('retrieves studios via GET', async () => {
