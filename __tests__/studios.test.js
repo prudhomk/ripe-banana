@@ -3,7 +3,7 @@ import request from 'supertest';
 import app from '../lib/app.js';
 import Studio from '../lib/models/Studio.js';
 
-describe('demo routes', () => {
+describe('studios routes', () => {
   beforeEach(() => {
     return sequelize.sync({ force: true });
   });
@@ -50,7 +50,7 @@ describe('demo routes', () => {
         country: 'United States'
       }
     ]);
-    console.log('hello', studioData[0].dataValues.createdAt);
+    
     const res = await request(app).get('/api/v1/studios');
     expect(res.body).toEqual([{ 
       ...studioData[0].dataValues,
@@ -67,6 +67,7 @@ describe('demo routes', () => {
     }]);
 
   });
+
   it('finds studio by id', async () => {
     const studioData = await Studio.create(
       {
