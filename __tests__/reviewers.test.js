@@ -70,6 +70,24 @@ describe('reviewers routes', () => {
       createdAt: reviewerData.dataValues.createdAt.toISOString()
     });
   });
+
+  it('updates a reviewer', async () => {
+    const reviewerData = await Reviewer.create(
+      {
+        name: 'Rooger Eggbert',
+        company: 'Times Magazine'
+      },
+    );
+
+    reviewerData.name = 'Roger Ebert';
+
+    const res = await request(app).put(`/api/v1/reviewers/${reviewerData.id}`);
+    expect(res.body).toEqual({
+      ...reviewerData.dataValues,
+      updatedAt: reviewerData.dataValues.updatedAt.toISOString(),
+      createdAt: reviewerData.dataValues.createdAt.toISOString()
+    });
+  });
 });
 
 
