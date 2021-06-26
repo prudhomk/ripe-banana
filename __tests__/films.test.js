@@ -9,23 +9,23 @@ describe('films routes', () => {
 
   const room = {
     title: 'The Room',
-    studio: 'Wiseau-Films',
+    studio: '1',
     released: 2003
   };
 
   const clotheslines = {
     title: 'Clotheslines',
-    studio: 'Buffalo Rose Productions',
+    studio: '2',
     released: 1981
   };
 
   const tampopo = {
     title: 'Tampopo',
-    studio: 'Toho',
+    studio: '3',
     released: 1985
   };
 
-  it('POST route for films', async () => {
+  it.only('POST route for films', async () => {
     const res = await request(app) 
       .post('/api/v1/films')
       .send(room)
@@ -34,7 +34,6 @@ describe('films routes', () => {
     expect(res.body).toEqual({
       id: expect.any(Number),
       ...room,
-      released: room.released.toISOString(),
       updatedAt: expect.any(String),
       createdAt: expect.any(String)
     });
