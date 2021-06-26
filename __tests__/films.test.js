@@ -1,6 +1,7 @@
 import sequelize from '../lib/utils/db.js';
 import request from 'supertest';
 import app from '../lib/app.js';
+import Film from '../lib/models/Film.js';
 
 describe('films routes', () => {
   beforeEach(() => {
@@ -25,7 +26,7 @@ describe('films routes', () => {
     released: 1985
   };
 
-  it.only('POST route for films', async () => {
+  it('POST route for films', async () => {
     const res = await request(app) 
       .post('/api/v1/films')
       .send(room)
@@ -37,6 +38,28 @@ describe('films routes', () => {
       updatedAt: expect.any(String),
       createdAt: expect.any(String)
     });
+  });
+
+  it('find all films', async () => {
+    Film.create(room);
+    Film.create(clotheslines);
+
+    const res = await request(app).get('/api/v1/films');
+
+    expect(res.body).toEqual([
+      {
+        id: expect.any(Number),
+        ...room,
+        updatedAt: expect.any(String),
+        createdAt: expect.any(String)
+      },
+      {
+        id: expect.any(Number),
+        ...clotheslines,
+        updatedAt: expect.any(String),
+        createdAt: expect.any(String)
+      }
+    ]);
   });
 });
 
