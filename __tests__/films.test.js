@@ -61,5 +61,20 @@ describe('films routes', () => {
       }
     ]);
   });
+  it('finds a film by id', async () => {
+    Film.create(tampopo);
+
+    const res = await request(app)
+      .get('/api/v1/films/1');
+    
+    expect(res.body).toEqual([
+      {
+        id: expect.any(Number),
+        ...tampopo,
+        updatedAt: expect.any(String),
+        createdAt: expect.any(String)
+      },
+    ]);
+  });
 });
 
