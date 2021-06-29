@@ -20,43 +20,46 @@ describe('reviews routes', () => {
   };
 
   it('creates reviews via POST', async () => {
+    const film = await Film.create({ title: 'The Room', studio: '1', released: 2003 });
+
     const res = await request(app)
       .post('/api/v1/reviews')
-      .send(review1);
+      .send({ ...review1, filmId: film.id });
     
     expect(res.body).toEqual({
       ...review1,
       id: 1,
+      filmId: film.id,
       updatedAt: expect.any(String),
       createdAt: expect.any(String)
     });
   });
 
   it('gets all reviews via GET', async () => {
-    await Film.create({ title: 'The Room', studio: '1', released: 2003 });
-    await Film.create({ title: 'Clotheslines', studio: '2', released: 1981 });
+    const film1 = await Film.create({ title: 'The Room', studio: '1', released: 2003 });
+    const film2 = await Film.create({ title: 'Clotheslines', studio: '2', released: 1981 });
 
-    await Review.create({ ...review1, film: 1, reviewer: '1' });
-    await Review.create({ ...review2, film: 2, reviewer: '1' });
+    await Review.create({ ...review1, filmId: film1.id, reviewer: '1' });
+    await Review.create({ ...review2, filmId: film2.id, reviewer: '1' });
 
     const res = await request(app).get('/api/v1/reviews');
 
-    expect(res.body).toEqual(expect.arrayContaining([
+    expect(res.body).toEqual([
       {
-        ...review2,
-        film: { id: '2', title: 'Clotheslines' },
-        id: 2,
+        ...review1,
+        film: { id: 1, title: 'The Room' },
+        id: 1,
         updatedAt: expect.any(String),
         createdAt: expect.any(String)
       },
       {
-        ...review1,
-        film: { id: '1', title: 'The Room' },
-        id: 1,
+        ...review2,
+        film: { id: 2, title: 'Clotheslines' },
+        id: 2,
         updatedAt: expect.any(String),
         createdAt: expect.any(String)
       }
-    ]));
+    ]);
   });
 
   it('delete review by id via DELETE', async () => {
