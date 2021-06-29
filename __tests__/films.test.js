@@ -61,8 +61,9 @@ describe('films routes', () => {
       }
     ]);
   });
+
   it('finds a film by id', async () => {
-    Film.create(tampopo);
+    await Film.create(tampopo);
 
     const res = await request(app)
       .get('/api/v1/films/1');
