@@ -8,6 +8,16 @@ describe('reviews routes', () => {
     return sequelize.sync({ force: true });
   });
 
+  const review1 = {
+    rating: 3,
+    review: 'I thought it was not that great but kind of good.'
+  };
+
+  const review2 = {
+    rating: 5,
+    review: 'it sucked'
+  };
+
   it('creates reviews via POST', async () => {
     const res = await request(app)
       .post('/api/v1/reviews')
@@ -15,6 +25,7 @@ describe('reviews routes', () => {
         rating: 3,
         review: 'I thought it was not that great but kind of good.'
       });
+    
     expect(res.body).toEqual({
       id: 1,
       rating: 3,
@@ -22,5 +33,27 @@ describe('reviews routes', () => {
       updatedAt: expect.any(String),
       createdAt: expect.any(String)
     });
+  });
+
+  it('gets all reviews via GET', async () => {
+    await Review.create(review1);
+    await Review.create(review2);
+
+    const res = await request(app).get('/api/v1/review');
+
+    expect(res.body).toEqual([
+      {
+        ...review1,
+        id: 1,
+        updatedAt: expect.any(String),
+        createdAt: expect.any(String)
+      },
+      {
+        ...review2,
+        id: 2,
+        updatedAt: expect.any(String),
+        createdAt: expect.any(String)
+      }
+    ]);
   });
 });
