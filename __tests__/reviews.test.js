@@ -60,18 +60,12 @@ describe('reviews routes', () => {
   it('delete review by id via DELETE', async () => {
     const review = await Review.create(review1);
 
-    const res = await request(app)
+    await request(app)
       .delete(`/api/v1/reviews/${review.id}`);
-    const res2 = await request(app)
+    const res = await request(app)
       .get('/api/v1/reviews');
 
-    expect(res.body).toEqual({
-      ...review1,
-      id: 1,
-      updatedAt: expect.any(String),
-      createdAt: expect.any(String)
-    });
-    expect(res2.body).not.toEqual(expect.arrayContaining([
+    expect(res.body).not.toEqual(expect.arrayContaining([
       {
         ...review1,
         id: 1,
