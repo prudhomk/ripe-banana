@@ -42,7 +42,7 @@ describe('reviews routes', () => {
       .get(`/api/v1/reviews/${review.id}`)
     ;
 
-    expect(res).toEqual({
+    expect(res.body).toEqual({
       ...review1,
       id: 1,
       updatedAt: expect.any(String),
