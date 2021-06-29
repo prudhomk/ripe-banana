@@ -2,6 +2,7 @@ import sequelize from '../lib/utils/db.js';
 import request from 'supertest';
 import app from '../lib/app.js';
 import Review from '../lib/models/Review.js';
+import Film from '../lib/models/Film.js';
 
 describe('reviews routes', () => {
   beforeEach(() => {
@@ -39,17 +40,24 @@ describe('reviews routes', () => {
     await Review.create(review1);
     await Review.create(review2);
 
+    Film.bulkCreate([
+      { title: 'The Room', studio: '1', released: 2003 },
+      { title: 'Clotheslines', studio: '2', released: 1981 }
+    ]);
+
     const res = await request(app).get('/api/v1/reviews');
 
     expect(res.body).toEqual([
       {
         ...review1,
+        film: [{ id: '1', title: 'The Room' }],
         id: 1,
         updatedAt: expect.any(String),
         createdAt: expect.any(String)
       },
       {
         ...review2,
+        film: [{ id: '2', title: 'Clotheslines' }],
         id: 2,
         updatedAt: expect.any(String),
         createdAt: expect.any(String)
